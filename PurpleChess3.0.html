@@ -1,0 +1,631 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Purple Chess</title>
+		<link rel="shortcut icon" href="images/dark_queen.png">
+		<style>
+			body{
+				font-size: 16px;
+			}
+			#boardTable{
+				float: left;
+			}
+			.table{
+				display: table;
+				width: 500px;
+				padding: 15px;
+			}
+			.row{
+				display: table-row;
+			}
+			.cell{
+				display: table-cell;
+				height: 60px;
+				width: 60px;
+				background-color: #ccccff;
+				border: 3px solid black;
+			}
+			.row:nth-child(even)>.cell:nth-child(odd),
+			.row:nth-child(odd)>.cell:nth-child(even)
+			{
+				background-color: #7300e6;
+			}
+			button
+			{
+				background-color: #7300e6;
+				border-radius: 3px;
+				width: 100px;
+				height: 60px;
+				color: #ccccff;
+				border-color: #ccccff;
+				font-size: 120%;
+			}
+			h1{
+				text-align: center;
+			}
+			.capturedCell{
+				height: 350px;
+			}
+			#whitePcsCaptured
+			{
+				background-color: #ccccff;
+			}
+			#blackPcsCaptured
+			{
+				background-color: #7300e6;
+			}
+			#popup
+			{
+				padding: 75px;
+				background-color: #7300e6;
+				position: fixed;
+				top: 20%;
+				right: 50%;
+				width: auto;
+				display: none;
+				border: 5px solid black;
+				text-align: center;
+			}
+			#whoseTurnText
+			{
+				margin: 0px;
+				padding: 15px 0px;
+				background-color: #ccccff;
+				display: inline-block;
+				border: 3px solid black;
+				width: 596.5px;
+				text-align: center;
+			}
+			#bigInfoBox
+			{
+				border-collapse: collapse;
+			}
+			#capturedCellTable
+			{
+				width: 600px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="table" id="boardTable">
+			<div class="row">
+				<div class="cell" id="cell00" onclick="firstClicked(0, 0)"></div>
+				<div class="cell" id="cell01" onclick="firstClicked(0, 1)"></div>
+				<div class="cell" id="cell02" onclick="firstClicked(0, 2)"></div>
+				<div class="cell" id="cell03" onclick="firstClicked(0, 3)"></div>
+				<div class="cell" id="cell04" onclick="firstClicked(0, 4)"></div>
+				<div class="cell" id="cell05" onclick="firstClicked(0, 5)"></div>
+				<div class="cell" id="cell06" onclick="firstClicked(0, 6)"></div>
+				<div class="cell" id="cell07" onclick="firstClicked(0, 7)"></div>
+			</div>
+			<div class="row">
+				<div class="cell" id="cell10" onclick="firstClicked(1, 0)"></div>
+				<div class="cell" id="cell11" onclick="firstClicked(1, 1)"></div>
+				<div class="cell" id="cell12" onclick="firstClicked(1, 2)"></div>
+				<div class="cell" id="cell13" onclick="firstClicked(1, 3)"></div>
+				<div class="cell" id="cell14" onclick="firstClicked(1, 4)"></div>
+				<div class="cell" id="cell15" onclick="firstClicked(1, 5)"></div>
+				<div class="cell" id="cell16" onclick="firstClicked(1, 6)"></div>
+				<div class="cell" id="cell17" onclick="firstClicked(1, 7)"></div>
+			</div>
+			<div class="row">
+				<div class="cell" id="cell20" onclick="firstClicked(2, 0)"></div>
+				<div class="cell" id="cell21" onclick="firstClicked(2, 1)"></div>
+				<div class="cell" id="cell22" onclick="firstClicked(2, 2)"></div>
+				<div class="cell" id="cell23" onclick="firstClicked(2, 3)"></div>
+				<div class="cell" id="cell24" onclick="firstClicked(2, 4)"></div>
+				<div class="cell" id="cell25" onclick="firstClicked(2, 5)"></div>
+				<div class="cell" id="cell26" onclick="firstClicked(2, 6)"></div>
+				<div class="cell" id="cell27" onclick="firstClicked(2, 7)"></div>
+			</div>
+			<div class="row">
+				<div class="cell" id="cell30" onclick="firstClicked(3, 0)"></div>
+				<div class="cell" id="cell31" onclick="firstClicked(3, 1)"></div>
+				<div class="cell" id="cell32" onclick="firstClicked(3, 2)"></div>
+				<div class="cell" id="cell33" onclick="firstClicked(3, 3)"></div>
+				<div class="cell" id="cell34" onclick="firstClicked(3, 4)"></div>
+				<div class="cell" id="cell35" onclick="firstClicked(3, 5)"></div>
+				<div class="cell" id="cell36" onclick="firstClicked(3, 6)"></div>
+				<div class="cell" id="cell37" onclick="firstClicked(3, 7)"></div>
+			</div>
+			<div class="row">
+				<div class="cell" id="cell40" onclick="firstClicked(4, 0)"></div>
+				<div class="cell" id="cell41" onclick="firstClicked(4, 1)"></div>
+				<div class="cell" id="cell42" onclick="firstClicked(4, 2)"></div>
+				<div class="cell" id="cell43" onclick="firstClicked(4, 3)"></div>
+				<div class="cell" id="cell44" onclick="firstClicked(4, 4)"></div>
+				<div class="cell" id="cell45" onclick="firstClicked(4, 5)"></div>
+				<div class="cell" id="cell46" onclick="firstClicked(4, 6)"></div>
+				<div class="cell" id="cell47" onclick="firstClicked(4, 7)"></div>
+			</div>
+			<div class="row">
+				<div class="cell" id="cell50" onclick="firstClicked(5, 0)"></div>
+				<div class="cell" id="cell51" onclick="firstClicked(5, 1)"></div>
+				<div class="cell" id="cell52" onclick="firstClicked(5, 2)"></div>
+				<div class="cell" id="cell53" onclick="firstClicked(5, 3)"></div>
+				<div class="cell" id="cell54" onclick="firstClicked(5, 4)"></div>
+				<div class="cell" id="cell55" onclick="firstClicked(5, 5)"></div>
+				<div class="cell" id="cell56" onclick="firstClicked(5, 6)"></div>
+				<div class="cell" id="cell57" onclick="firstClicked(5, 7)"></div>
+			</div>
+			<div class="row">
+				<div class="cell" id="cell60" onclick="firstClicked(6, 0)"></div>
+				<div class="cell" id="cell61" onclick="firstClicked(6, 1)"></div>
+				<div class="cell" id="cell62" onclick="firstClicked(6, 2)"></div>
+				<div class="cell" id="cell63" onclick="firstClicked(6, 3)"></div>
+				<div class="cell" id="cell64" onclick="firstClicked(6, 4)"></div>
+				<div class="cell" id="cell65" onclick="firstClicked(6, 5)"></div>
+				<div class="cell" id="cell66" onclick="firstClicked(6, 6)"></div>
+				<div class="cell" id="cell67" onclick="firstClicked(6, 7)"></div>
+			</div>
+			<div class="row">
+				<div class="cell" id="cell70" onclick="firstClicked(7, 0)"></div>
+				<div class="cell" id="cell71" onclick="firstClicked(7, 1)"></div>
+				<div class="cell" id="cell72" onclick="firstClicked(7, 2)"></div>
+				<div class="cell" id="cell73" onclick="firstClicked(7, 3)"></div>
+				<div class="cell" id="cell74" onclick="firstClicked(7, 4)"></div>
+				<div class="cell" id="cell75" onclick="firstClicked(7, 5)"></div>
+				<div class="cell" id="cell76" onclick="firstClicked(7, 6)"></div>
+				<div class="cell" id="cell77" onclick="firstClicked(7, 7)"></div>
+			</div>
+		</div><br>
+		<button type="button" onclick="setUp()">New Game</button><br><br>
+		<div id="bigInfoBox">
+			<h1 id="whoseTurnText">White's Turn!</h1>
+			<div id="capturedCellTable" class="table">
+				<div class="row">
+					<div class="cell capturedCell" id="blackPcsCaptured">
+						<h1>Black Pieces Captured</h1>
+						<p id="blackPiecesCaptured"></p>
+					</div>
+					<div class="cell capturedCell" id="whitePcsCaptured">
+						<h1>White Pieces Captured</h1>
+						<p id="whitePiecesCaptured"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<p id="popup" onclick="hidePopup()"></p>
+		<script>
+			var coordsSelected=[[], []];
+			var coord1=0;
+			var coord2=0;
+			var tempBoard=[[],[],[],[],[],[],[],[]];
+			var secondCoordsSelected=[[], []];
+			var board=[[],[],[],[],[],[],[],[]];
+			var whitesTurn=true;
+			var castlingPcsMoved=[false, false, false, false, false, false];//black rook (0,0), black king, black rook(0,7), white rook(7,0), white king, white rook(7,7)
+			function setUp()
+			{
+				if((typeof coordsSelected[0])=="number" && (typeof coordsSelected[1])=="number")//if not first turn, make sure selected space has black border
+					document.getElementById("cell"+coordsSelected[0]+coordsSelected[1]).style.borderColor="black";
+				coordsSelected=[];
+				var coord1=0;
+				var coord2=0;
+				var tempBoard=[[],[],[],[],[],[],[],[]];
+			    secondCoordsSelected=[];
+			    board=[];
+				whitesTurn=true;
+				document.getElementById("blackPiecesCaptured").innerHTML="";
+				document.getElementById("whitePiecesCaptured").innerHTML="";
+				document.getElementById("whoseTurnText").innerHTML="White's Turn!";
+				document.getElementById("whoseTurnText").style.backgroundColor="#ccccff";
+				board=[["dark_rook", "dark_knight", "dark_bishop", "dark_queen", "dark_king", "dark_bishop", "dark_knight", "dark_rook"],["dark_pawn", "dark_pawn", "dark_pawn", "dark_pawn", "dark_pawn", "dark_pawn", "dark_pawn", "dark_pawn"],
+				["", "", "", "", "", "", "", ""],["", "", "", "", "", "", "", ""],
+				["", "", "", "", "", "", "", ""],["", "", "", "", "", "", "", ""],
+				["light_pawn", "light_pawn", "light_pawn", "light_pawn", "light_pawn", "light_pawn", "light_pawn", "light_pawn"],["light_rook", "light_knight", "light_bishop", "light_queen", "light_king", "light_bishop", "light_knight", "light_rook"]];
+				document.getElementById("cell00").style.backgroundImage="url(images/dark_rook.png)";
+				document.getElementById("cell01").style.backgroundImage="url(images/dark_knight.png)";
+				document.getElementById("cell02").style.backgroundImage="url(images/dark_bishop.png)";
+				document.getElementById("cell03").style.backgroundImage="url(images/dark_queen.png)";
+				document.getElementById("cell04").style.backgroundImage="url(images/dark_king.png)";
+				document.getElementById("cell05").style.backgroundImage="url(images/dark_bishop.png)";
+				document.getElementById("cell06").style.backgroundImage="url(images/dark_knight.png)";
+				document.getElementById("cell07").style.backgroundImage="url(images/dark_rook.png)";
+				document.getElementById("cell10").style.backgroundImage="url(images/dark_pawn.png)";
+				document.getElementById("cell11").style.backgroundImage="url(images/dark_pawn.png)";
+				document.getElementById("cell12").style.backgroundImage="url(images/dark_pawn.png)";
+				document.getElementById("cell13").style.backgroundImage="url(images/dark_pawn.png)";
+				document.getElementById("cell14").style.backgroundImage="url(images/dark_pawn.png)";
+				document.getElementById("cell15").style.backgroundImage="url(images/dark_pawn.png)";
+				document.getElementById("cell16").style.backgroundImage="url(images/dark_pawn.png)";
+				document.getElementById("cell17").style.backgroundImage="url(images/dark_pawn.png)";
+				var x;
+				var y;
+				for(x=2; x<6; x++)
+				{
+					for(y=0; y<8; y++)
+						document.getElementById("cell"+x+y).style.backgroundImage="none";
+				}
+				document.getElementById("cell60").style.backgroundImage="url(images/light_pawn.png)";
+				document.getElementById("cell61").style.backgroundImage="url(images/light_pawn.png)";
+				document.getElementById("cell62").style.backgroundImage="url(images/light_pawn.png)";
+				document.getElementById("cell63").style.backgroundImage="url(images/light_pawn.png)";
+				document.getElementById("cell64").style.backgroundImage="url(images/light_pawn.png)";
+				document.getElementById("cell65").style.backgroundImage="url(images/light_pawn.png)";
+				document.getElementById("cell66").style.backgroundImage="url(images/light_pawn.png)";
+				document.getElementById("cell67").style.backgroundImage="url(images/light_pawn.png)";
+				document.getElementById("cell70").style.backgroundImage="url(images/light_rook.png)";
+				document.getElementById("cell71").style.backgroundImage="url(images/light_knight.png)";
+				document.getElementById("cell72").style.backgroundImage="url(images/light_bishop.png)";
+				document.getElementById("cell73").style.backgroundImage="url(images/light_queen.png)";
+				document.getElementById("cell74").style.backgroundImage="url(images/light_king.png)";
+				document.getElementById("cell75").style.backgroundImage="url(images/light_bishop.png)";
+				document.getElementById("cell76").style.backgroundImage="url(images/light_knight.png)";
+				document.getElementById("cell77").style.backgroundImage="url(images/light_rook.png)";
+			}
+			function firstClicked(c1, c2)
+			{
+				coord1=c1;
+				coord2=c2;
+				if(mateOrStale("light", board)=="mate")
+					showGOPopup("Game Over<br>Black won!");
+				else if(mateOrStale("dark", board)=="mate")
+					showGOPopup("Game Over<br>White won!");
+				else if(mateOrStale("light", board)=="stale" || mateOrStale("dark", board)=="stale")
+					showGOPopup("Stalemate<br>It's a tie!");
+				if(coordsSelected.length>0 && coord1==coordsSelected[0] && coord2==coordsSelected[1])//unselect
+				{
+					document.getElementById("cell"+coord1+coord2).style.borderColor="black";
+					coordsSelected=[];
+				}
+				else if(coordsSelected.length==0 && board[coord1][coord2]!="" && ((whitesTurn && board[coord1][coord2].substring(0, board[coord1][coord2].indexOf("_"))=="light") || (!whitesTurn && board[coord1][coord2].substring(0, board[coord1][coord2].indexOf("_"))=="dark")))
+				{//select in yellow and check that it is the person's turn who is moving the piece
+					coordsSelected[0]=coord1;
+					coordsSelected[1]=coord2;
+					document.getElementById("cell"+coord1+coord2).style.borderColor="yellow";
+				}
+				else if(coordsSelected.length>0 && ((board[coordsSelected[0]][coordsSelected[1]]=="" || board[coord1][coord2]=="") || (board[coord1][coord2].substring(0, board[coord1][coord2].indexOf("_"))!=board[coordsSelected[0]][coordsSelected[1]].substring(0, board[coordsSelected[0]][coordsSelected[1]].indexOf("_")))))	          					
+				{//make move if checked for moving an empty cell, choosing a second square  or taking your own color
+					pieceName=board[coordsSelected[0]][coordsSelected[1]].substring(board[coordsSelected[0]][coordsSelected[1]].indexOf("_")+1);
+					tempBoard=[[],[],[],[],[],[],[],[]];
+					for(var r=0; r<8; r++)
+					{
+						for(var c=0; c<8; c++)
+						{
+							tempBoard[r][c]=board[r][c];
+						}
+					}
+					if(pieceName=="pawn" && pawnCheck(tempBoard, coordsSelected, coord1, coord2) && ((whitesTurn && coord1==0) || (!whitesTurn && coord1==7)))
+					{//queening pawn
+						if(whitesTurn)
+							showQPopup("light");
+						else
+							showQPopup("dark");
+					}
+					else if((pieceName=="bishop" && bishopCheck(tempBoard, coordsSelected, coord1, coord2)) || (pieceName=="rook" && rookCheck(tempBoard, coordsSelected, coord1, coord2)) || (pieceName=="queen" && queenCheck(tempBoard, coordsSelected, coord1, coord2)) || (pieceName=="king" && kingCheck(tempBoard, coordsSelected, coord1, coord2)) || (pieceName=="knight" && knightCheck(tempBoard, coordsSelected, coord1, coord2)) || (pieceName=="pawn" && pawnCheck(tempBoard, coordsSelected, coord1, coord2)))
+					{
+						tempBoard[coord1][coord2]=tempBoard[coordsSelected[0]][coordsSelected[1]];
+						secondClicked(pieceName);
+					}
+					if(mateOrStale("light", board)=="mate")
+						showGOPopup("Game Over<br>Black won!");
+					else if(mateOrStale("dark", board)=="mate")
+						showGOPopup("Game Over<br>White won!");
+					else if(mateOrStale("light", board)=="stale" || mateOrStale("dark", board)=="stale")
+						showGOPopup("Stalemate<br>It's a tie!");
+				}
+			}
+			function secondClicked(pieceName)
+			{
+				tempBoard[coordsSelected[0]][coordsSelected[1]]="";
+				secondCoordsSelected[0]=coord1;
+				secondCoordsSelected[1]=coord2;
+				if((whitesTurn && kingInCheck("light", tempBoard)) || (!whitesTurn && kingInCheck("dark", tempBoard)))
+				{//was moving into/ignoring check: put things back the way they were
+					secondCoordsSelected[0]="";
+					secondCoordsSelected[1]="";
+					showIllegalPopup();
+				}
+				else
+				{//legal (check-wise); finish move
+					if(board[secondCoordsSelected[0]][secondCoordsSelected[1]]!="")
+					{
+						if(whitesTurn)
+							document.getElementById("whitePiecesCaptured").innerHTML+='<img src="images/'+board[secondCoordsSelected[0]][secondCoordsSelected[1]]+'.png">';
+						else
+							document.getElementById("blackPiecesCaptured").innerHTML+='<img src="images/'+board[secondCoordsSelected[0]][secondCoordsSelected[1]]+'.png">';
+					}
+					if(pieceName=="king" && Math.abs(secondCoordsSelected[1]-coordsSelected[1])==2)
+					{
+						if(secondCoordsSelected[1]<coordsSelected[1])//queenside
+						{
+							tempBoard[coordsSelected[0]][3]=tempBoard[coordsSelected[0]][0];
+							tempBoard[coordsSelected[0]][0]="";
+							document.getElementById("cell"+coordsSelected[0]+"0").style.backgroundImage="none";
+							document.getElementById("cell"+coordsSelected[0]+"3").style.backgroundImage="url(images/"+tempBoard[coordsSelected[0]][3]+".png)";
+						}
+						else//kingside
+						{
+							tempBoard[coordsSelected[0]][5]=tempBoard[coordsSelected[0]][7];
+							tempBoard[coordsSelected[0]][7]="";
+							document.getElementById("cell"+coordsSelected[0]+"7").style.backgroundImage="none";
+							document.getElementById("cell"+coordsSelected[0]+"5").style.backgroundImage="url(images/"+tempBoard[coordsSelected[0]][5]+".png)";
+						}
+					}
+					if(coordsSelected[0]==0 && coordsSelected[1]==0)//black rook moved
+						castlingPcsMoved[0]=true;
+					else if(coordsSelected[0]==0 && coordsSelected[1]==4)//black king moved
+						castlingPcsMoved[1]=true;
+					else if(coordsSelected[0]==0 && coordsSelected[1]==7)//black rook moved
+						castlingPcsMoved[2]=true;
+					else if(coordsSelected[0]==7 && coordsSelected[1]==0)//white rook moved
+						castlingPcsMoved[3]=true;
+					else if(coordsSelected[0]==7 && coordsSelected[1]==4)//white king moved
+						castlingPcsMoved[4]=true;
+					else if(coordsSelected[0]==7 && coordsSelected[1]==7)//white rook moved
+						castlingPcsMoved[5]=true;
+					document.getElementById("cell"+coordsSelected[0]+coordsSelected[1]).style.backgroundImage="none";
+					if(whitesTurn)
+						document.getElementById("cell"+secondCoordsSelected[0]+secondCoordsSelected[1]).style.backgroundImage="url(images/light_"+pieceName+".png)";
+					else
+						document.getElementById("cell"+secondCoordsSelected[0]+secondCoordsSelected[1]).style.backgroundImage="url(images/dark_"+pieceName+".png)";
+					document.getElementById("cell"+coordsSelected[0]+coordsSelected[1]).style.borderColor="black";
+					board=tempBoard;
+					coordsSelected=[];
+					secondCoordsSelected=[];
+					if(whitesTurn)
+					{
+						whitesTurn=false;
+						document.getElementById("whoseTurnText").innerHTML="Black's Turn!";
+						document.getElementById("whoseTurnText").style.backgroundColor="#7300e6";
+					}
+					else
+					{
+						whitesTurn=true;
+						document.getElementById("whoseTurnText").innerHTML="White's Turn!";
+						document.getElementById("whoseTurnText").style.backgroundColor="#ccccff";
+					}
+				}
+			}
+			function bishopCheck(theBoard, firstCoords, toCoord1, toCoord2)
+			{
+				var x;
+				for(x=1; x<Math.abs(firstCoords[0]-toCoord1); x++)//if there is a piece in the way (jumping over)
+				{
+					if(toCoord1>firstCoords[0] && toCoord2>firstCoords[1] && theBoard[firstCoords[0]+x][firstCoords[1]+x]!="")
+						return false;
+					else if(toCoord1>firstCoords[0] && toCoord2<firstCoords[1] && theBoard[firstCoords[0]+x][firstCoords[1]-x]!="")
+						return false;
+					else if(toCoord1<firstCoords[0] && toCoord2>firstCoords[1] && theBoard[firstCoords[0]-x][firstCoords[1]+x]!="")
+						return false;
+					else if(toCoord1<firstCoords[0] && toCoord2<firstCoords[1] && theBoard[firstCoords[0]-x][firstCoords[1]-x]!="")
+						return false;
+				}
+				return (Math.abs(firstCoords[0]-toCoord1))==(Math.abs(firstCoords[1]-toCoord2));
+			}
+			function rookCheck(theBoard, firstCoords, toCoord1, toCoord2)
+			{
+				var x;
+				for(x=1; x<Math.abs((firstCoords[0]-toCoord1)-(firstCoords[1]-toCoord2)); x++)//if there is a piece in the way (jumping over)
+				{
+					if(firstCoords[1]==toCoord2 && toCoord1>firstCoords[0] && theBoard[firstCoords[0]+x][firstCoords[1]]!="")
+						return false;
+					else if(firstCoords[1]==toCoord2 && toCoord1<firstCoords[0] && theBoard[firstCoords[0]-x][firstCoords[1]]!="")
+						return false;
+					else if(toCoord2<firstCoords[1] && firstCoords[0]==toCoord1 && theBoard[firstCoords[0]][firstCoords[1]-x]!="")
+						return false;
+					else if(toCoord2>firstCoords[1] && firstCoords[0]==toCoord1 && theBoard[firstCoords[0]][firstCoords[1]+x]!="")
+						return false;
+				}
+				return (firstCoords[1]==toCoord2 || firstCoords[0]==toCoord1);
+			}
+			function queenCheck(theBoard, firstCoords, toCoord1, toCoord2)
+			{
+				return bishopCheck(theBoard, firstCoords, toCoord1, toCoord2) || rookCheck(theBoard, firstCoords, toCoord1, toCoord2);
+			}
+			function kingCheck(theBoard, firstCoords, toCoord1, toCoord2)
+			{
+				if(firstCoords[0]==toCoord1 && Math.abs(firstCoords[1]-toCoord2)==2)//castling
+				{//check the king and rook haven't moved
+					var color=theBoard[firstCoords[0]][firstCoords[1]].substring(0, theBoard[firstCoords[0]][firstCoords[1]].indexOf("_"));
+					if(color=="light" && toCoord2>firstCoords[1] && (castlingPcsMoved[4] || castlingPcsMoved[5]))//white, king's side
+						return false;
+					else if(color=="light" && toCoord2<firstCoords[1] && (castlingPcsMoved[3] || castlingPcsMoved[4]))//white, queen's side
+						return false;
+					else if(color=="dark" && toCoord2>firstCoords[1] && (castlingPcsMoved[1] || castlingPcsMoved[2]))//black, king's side
+						return false;
+					else if(color=="dark" && toCoord2<firstCoords[1] && (castlingPcsMoved[0] || castlingPcsMoved[1]))//black, queen's side
+						return false;
+					var c=1;
+					var mod=1;
+					if(toCoord2>firstCoords[1])
+					{
+						c=6;
+						mod=-1;
+					}
+					while(c!=firstCoords[1])
+					{
+						if(theBoard[firstCoords[0]][c]!="")//check no pieces in the way
+							return false;
+						c+=mod;
+					}
+					var testBoard=[[], [], [], [], [], [], [], []];
+					for(var r=0; r<8; r++)
+					{
+						for(var c=0; c<8; c++)
+						{
+							testBoard[r][c]=theBoard[r][c];
+							if(theBoard[r][c]==color+"_king")
+							{
+								kingR=r;
+								kingC=c;
+							}
+						}
+					}
+					for(var x=0; x<=2; x++)
+					{
+						save=testBoard[toCoord1][firstCoords[1]+(mod*x)];//check for anyone being in check
+						testBoard[toCoord1][firstCoords[1]+(mod*x)]=testBoard[toCoord1][firstCoords[1]];
+						testBoard[toCoord1][firstCoords[1]]=save;
+						if(kingInCheck(color, testBoard))
+							return false;
+						save=testBoard[toCoord1][firstCoords[1]+(mod*x)];
+						testBoard[toCoord1][firstCoords[1]+(mod*x)]=testBoard[toCoord1][firstCoords[1]];
+						testBoard[toCoord1][firstCoords[1]]=save;
+					}
+					return true;
+				}	
+				else
+					return Math.abs(firstCoords[0]-toCoord1)<2 && Math.abs(firstCoords[1]-toCoord2)<2;
+			}
+			function knightCheck(theBoard, firstCoords, toCoord1, toCoord2)
+			{
+				return (Math.abs(firstCoords[0]-toCoord1)==2 && Math.abs(firstCoords[1]-toCoord2)==1) || (Math.abs(firstCoords[0]-toCoord1)==1 && Math.abs(firstCoords[1]-toCoord2)==2);
+			}
+			function pawnCheck(theBoard, firstCoords, toCoord1, toCoord2)
+			{
+				if(theBoard[toCoord1][toCoord2]!="")//capturing
+				{
+					if(theBoard[firstCoords[0]][firstCoords[1]].substring(0, theBoard[firstCoords[0]][firstCoords[1]].indexOf("_"))=="light")
+						return firstCoords[0]-1==toCoord1 && Math.abs(firstCoords[1]-toCoord2)==1;
+					else
+						return firstCoords[0]+1==toCoord1 && Math.abs(firstCoords[1]-toCoord2)==1;
+				}//moving normally
+				else if(theBoard[firstCoords[0]][firstCoords[1]].substring(0, theBoard[firstCoords[0]][firstCoords[1]].indexOf("_"))=="light")
+				{
+					if(firstCoords[0]==6 && toCoord1==4)//first turn and moving two spaces
+						return firstCoords[0]-toCoord1==2 && theBoard[toCoord1+1][toCoord2]=="" && firstCoords[1]==toCoord2;
+					else//normal turn
+						return firstCoords[0]-1==toCoord1 && firstCoords[1]==toCoord2;
+				}
+				else if(theBoard[firstCoords[0]][firstCoords[1]].substring(0, theBoard[firstCoords[0]][firstCoords[1]].indexOf("_"))=="dark")
+				{
+					if(firstCoords[0]==1 && toCoord1==3)//first turn and moving two spaces
+						return toCoord1-firstCoords[0]==2 && theBoard[toCoord1-1][toCoord2]=="" && firstCoords[1]==toCoord2;
+					else//normal turn
+						return firstCoords[0]+1==toCoord1 && firstCoords[1]==toCoord2;
+				}
+			}
+			function kingInCheck(color, theBoard)
+			{
+				var kingR;
+				var kingC;
+				for(var r=0; r<8; r++)
+				{
+					for(var c=0; c<8; c++)
+					{
+						if(theBoard[r][c]==color+"_king")
+						{
+							kingR=r;
+							kingC=c;
+							break;
+						}
+					}
+				}
+				for(var r=0; r<8; r++)
+				{
+					for(var c=0; c<8; c++)
+					{
+						var pieceName=theBoard[r][c].substring(theBoard[r][c].indexOf("_")+1);
+						if(theBoard[r][c].substring(0, theBoard[r][c].indexOf("_"))!=color && ((pieceName=="bishop" && bishopCheck(theBoard, [r, c], kingR, kingC)) || (pieceName=="rook" && rookCheck(theBoard, [r, c], kingR, kingC)) || (pieceName=="queen" && queenCheck(theBoard, [r, c], kingR, kingC)) || (pieceName=="king" && kingCheck(theBoard, [r, c], kingR, kingC)) || (pieceName=="knight" && knightCheck(theBoard, [r, c], kingR, kingC)) || (pieceName=="pawn" && pawnCheck(theBoard, [r, c], kingR, kingC))))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+			function mateOrStale(color, theBoard)
+			{
+				var mate=true;
+				var stale=true;
+				if(!kingInCheck(color, theBoard))
+					mate=false;
+				else
+					stale=false;
+				var kingR;
+				var kingC;
+				var testBoard=[[], [], [], [], [], [], [], []];
+				for(var r=0; r<8; r++)
+				{
+					for(var c=0; c<8; c++)
+					{
+						testBoard[r][c]=theBoard[r][c];
+						if(theBoard[r][c]==color+"_king")
+						{
+							kingR=r;
+							kingC=c;
+						}
+					}
+				}
+				for(var r=0; r<8; r++)
+				{
+					for(var c=0; c<8; c++)
+					{
+						var pieceName=board[r][c].substring(board[r][c].indexOf("_")+1);
+						for(var toR=0; toR<8; toR++)
+						{
+							for(var toC=0; toC<8; toC++)
+							{
+								if(board[r][c].substring(0, board[r][c].indexOf("_"))==color && (board[toR][toC]=="" || board[r][c].substring(0, board[r][c].indexOf("_"))!=board[toR][toC].substring(0, board[toR][toC].indexOf("_"))) && ((pieceName=="bishop" && bishopCheck(theBoard, [r, c], toR, toC)) || (pieceName=="rook" && rookCheck(theBoard, [r, c], toR, toC)) || (pieceName=="queen" && queenCheck(theBoard, [r, c], toR, toC)) || (pieceName=="king" && kingCheck(theBoard, [r, c], toR, toC)) || (pieceName=="knight" && knightCheck(theBoard, [r, c], toR, toC)) || (pieceName=="pawn" && pawnCheck(theBoard, [r, c], toR, toC))))
+								{
+									save=testBoard[toR][toC];
+									testBoard[toR][toC]=testBoard[r][c];
+									testBoard[r][c]="";
+									if(!kingInCheck(color, testBoard))
+									{
+										mate=false;
+										stale=false;
+									}
+									save=testBoard[toR][toC];
+									testBoard[toR][toC]=testBoard[r][c];
+									testBoard[r][c]=save;
+								}
+							}
+						}
+					}
+				}
+				if(mate)
+					return "mate";
+				else if(stale)
+					return "stale";
+				return "";
+			}
+			function showGOPopup(extraWrds)
+			{
+				setTimeout(function() 
+				{
+					document.getElementById("popup").style.display="block";
+					if(extraWrds==="Game Over<br>Black won!")
+						document.getElementById("popup").style.backgroundColor="#7300e6";
+					else if(extraWrds==="Game Over<br>White won!")
+						document.getElementById("popup").style.backgroundColor="#CCCCFF";
+					else
+						document.getElementById("popup").style.backgroundColor="#FFFFFF";
+					document.getElementById("popup").innerHTML="<h1>"+extraWrds+"</h1><br>(Click to hide)";
+				}, 1000);
+			}
+			function showQPopup(color)
+			{
+				if(whitesTurn)
+					document.getElementById("popup").style.backgroundColor="#CCCCFF";
+				else
+					document.getElementById("popup").style.backgroundColor="#7300e6";
+				document.getElementById("popup").style.display="block";
+				document.getElementById("popup").innerHTML="<h1>Choose A New Piece</h1><br><img src='images/"+color+"_queen.png' onclick='resetQPiece(\"queen\", \""+color+"\")'><img src='images/"+color+"_rook.png' onclick='resetQPiece(\"rook\", \""+color+"\")'><img src='images/"+color+"_bishop.png' onclick='resetQPiece(\"bishop\", \""+color+"\")'><img src='images/"+color+"_knight.png' onclick='resetQPiece(\"knight\", \""+color+"\")'>";
+			}
+			function showIllegalPopup()
+			{
+				if(whitesTurn)
+					document.getElementById("popup").style.backgroundColor="#CCCCFF";
+				else
+					document.getElementById("popup").style.backgroundColor="#7300e6";
+				document.getElementById("popup").style.display="block";
+				document.getElementById("popup").innerHTML="<h1>Illegal Move<br>You are in Check</h1><br>(Click to hide)";
+			}
+			function resetQPiece(pieceName, color)
+			{
+				document.getElementById("cell"+coordsSelected[0]+coordsSelected[1]).style.backgroundImage="url(images/"+color+"_"+pieceName+".png)";
+				tempBoard[coord1][coord2]=color+"_"+pieceName;
+				hidePopup();
+				secondClicked(pieceName);
+			}
+			function hidePopup()
+			{
+				document.getElementById("popup").style.display="none";
+			}
+		</script>
+	</body>
+</html>
